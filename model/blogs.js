@@ -26,7 +26,7 @@ module.exports = (sequelize, type) =>
       },
       categoryId: {
         field: "category_id",
-        type: type.JSON,
+        type: type.JSONB,
         allowNull: false,
       },
       Image: {

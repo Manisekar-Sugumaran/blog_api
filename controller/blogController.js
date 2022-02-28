@@ -3,11 +3,11 @@ const { blogService } = require("../service");
 const {
   createBlogByID,
   getBlogDetails,
-  getBlogCount,
+  // getBlogCount,
   getBlogByIndId,
   UpdateBlogById,
   dropBlogById,
-  searchBlogBytitle,
+  // searchBlogBytitle,
 } = blogService;
 
 const createBlog = async (req, res) => {
@@ -22,9 +22,9 @@ const createBlog = async (req, res) => {
 
 const getBlog = async (req, res) => {
   try {
-    const count = await getBlogCount();
+    // const count = await getBlogCount();
     const result = await getBlogDetails({ ...req.query });
-    return res.status(200).json({ count, rows: result });
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(400).send("err");
   }
@@ -61,15 +61,15 @@ const dropBlog = async (req, res) => {
   }
 };
 
-const searchBlog = async (req, res) => {
-  try {
-    const { search } = req.query;
-    const result = await searchBlogBytitle(search);
-    return res.status(200).json(result);
-  } catch (error) {
-    return res.status(400).send("err");
-  }
-};
+// const searchBlog = async (req, res) => {
+//   try {
+//     const { search } = req.query;
+//     const result = await searchBlogBytitle(search);
+//     return res.status(200).json(result);
+//   } catch (error) {
+//     return res.status(400).send("err");
+//   }
+// };
 
 module.exports = {
   createBlog,
@@ -77,5 +77,5 @@ module.exports = {
   getBlogById,
   UpdateBlog,
   dropBlog,
-  searchBlog,
+  // searchBlog,
 };

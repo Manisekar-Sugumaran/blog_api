@@ -10,7 +10,25 @@ const createBlogLikeById = (id, data) =>
 
 const getBlogLikesById = () => BlogLikes.findAll({});
 
+const updateLikedById = (id, data, blogId) =>
+  BlogLikes.update(data, {
+    where: {
+      userId: id,
+      blogId,
+    },
+  });
+
+const updateLikedFalseById = (id, data, blogId) =>
+  BlogLikes.update(data, {
+    where: {
+      userId: id,
+      blogId,
+    },
+  });
+
 module.exports = {
   createBlogLikeById,
   getBlogLikesById,
+  updateLikedById,
+  updateLikedFalseById,
 };

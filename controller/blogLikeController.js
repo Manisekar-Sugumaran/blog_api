@@ -1,6 +1,11 @@
 const { blogLikesService } = require("../service");
 
-const { createBlogLikeById, getBlogLikesById } = blogLikesService;
+const {
+  createBlogLikeById,
+  getBlogLikesById,
+  updateLikedById,
+  updateLikedFalseById,
+} = blogLikesService;
 
 const createBlogLike = async (req, res) => {
   try {
@@ -22,7 +27,32 @@ const getBlogLikes = async (req, res) => {
   }
 };
 
+const updateLikes = async (req, res) => {
+  try {
+    const data = { isLiked: true };
+    const { id } = req.params;
+    const blogId = req.body;
+    const result = await updateLikedById(id, data, blogId);
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(400).send("err");
+  }
+};
+
+const updateLikesFalse = async (req, res) => {
+  try {
+    const data = { isLiked: false };
+    const { id } = req.params;
+    const blogId = req.body;
+    const result = await updateLikedFalseById(id, data, blogId);
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(400).send("err");
+  }
+};
 module.exports = {
   createBlogLike,
   getBlogLikes,
+  updateLikes,
+  updateLikesFalse,
 };
