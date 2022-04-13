@@ -9,11 +9,6 @@ module.exports = (sequelize, type) =>
         autoIncrement: true,
         allowNull: false,
       },
-      likes: {
-        type: type.INTEGER,
-        field: "likes",
-        allowNull: false,
-      },
       userId: {
         type: type.INTEGER,
         field: "user_id",
@@ -25,11 +20,6 @@ module.exports = (sequelize, type) =>
         field: "blog_id",
         allowNull: false,
         foreignKey: "blog_id_fkey",
-      },
-      isLiked: {
-        field: "is_liked",
-        type: type.BOOLEAN,
-        allowNull: false,
       },
       createdBy: {
         field: "created_by",

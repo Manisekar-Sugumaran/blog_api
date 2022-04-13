@@ -7,7 +7,7 @@ const {
   UpdateBlog,
   getBlogById,
   dropBlog,
-  // searchBlog,
+  searchBlog,
 } = require("../controller/blogController");
 
 const storage = Multer.diskStorage({
@@ -27,7 +27,7 @@ const upload = Multer({
 }).single("file");
 
 router.post("/create", createBlog);
-// router.get("/search", searchBlog);
+router.get("/search", searchBlog);
 router.get("/get", getBlog);
 router.get("/get/:id", getBlogById);
 router.put("/update/:id", UpdateBlog);

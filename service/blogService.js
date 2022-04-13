@@ -1,5 +1,6 @@
-const { Blog } = require("../model");
+const { Blog, BlogLikes } = require("../model");
 const { Op } = require("sequelize");
+const { reject } = require("bcrypt/promises");
 
 const createBlogByID = (data) => Blog.create(data);
 
@@ -9,22 +10,36 @@ const getBlogDetails = ({ pageNo, tag, search }) =>
   new Promise(async (res, rej) => {
     var statement = {};
     if (tag) statement.categoryId = { [Op.contains]: [{ id: parseInt(tag) }] };
-    if (search) statement.title = { [Op.like]: "%" + search + "%" };
+    if (search) statement.title = { [Op.iLike]: "%" + search + "%" };
     Blog.findAndCountAll({
       where: statement,
       limit: 6,
       offset: (pageNo - 1) * 6,
       order: [["created_at", "DESC"]],
+      include: [
+        {
+          model: BlogLikes,
+        },
+      ],
     }).then((result) => {
       res(result);
     });
   });
 
 const getBlogByIndId = (id) =>
-  Blog.findOne({
-    where: {
-      blogDetailsId: id,
-    },
+  new Promise(async (resolve, reject) => {
+    try {
+      const sd = await Blog.findAll({});
+      const dd = await Blog.findOne({
+        where: {
+          blogDetailsId: id,
+        },
+      });
+      const s = { sd, dd };
+      resolve(s);
+    } catch (error) {
+      reject(error);
+    }
   });
 
 const UpdateBlogById = (id, data) =>
@@ -41,14 +56,14 @@ const dropBlogById = (id) =>
     },
   });
 
-// const searchBlogBytitle = (search) => {
-//   Blog.findAll({
-//     where: {
-//       title: { [Op.like]: "%" + search + "%" },
-//     },
-//   });
-// };
-
+const searchBlogBytitle = () => {
+  Blog.findAll({
+    attributes: [
+      "createdAt",
+      [Op.fn("date_format", Op.col("createdAt"), "%Y-%m-%d"), "createdAt"],
+    ],
+  });
+};
 // const searchBlogBytitle = (search) =>{
 // if(isTag){
 // Blog.findAll({
@@ -79,5 +94,5 @@ module.exports = {
   dropBlogById,
   getBlogByIndId,
   // getBlogCount,
-  // searchBlogBytitle,
+  searchBlogBytitle,
 };
